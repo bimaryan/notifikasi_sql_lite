@@ -1,0 +1,2 @@
+C:/Users/bimar/OneDrive/Documents/Semester6/Pemrograman_Mobile_2/praktikum_6/notifikasi_sql_lite/android/app/.cxx/Debug/2u521e6o/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/bimar/OneDrive/Documents/Semester6/Pemrograman_Mobile_2/praktikum_6/notifikasi_sql_lite/android/app/.cxx/Debug/2u521e6o/x86_64/CMakeFiles/rebuild_cache.dir
