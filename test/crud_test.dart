@@ -26,10 +26,33 @@ void main() {
   });
 
   test('Delete a task', () async {
-    // kerjakan
+    // Tambahkan tugas ke database
+    final task = Task(title: 'Task to delete');
+    final taskId = await dbHelper.insertTask(task);
+
+    // Pastikan tugas telah ditambahkan
+    var tasks = await dbHelper.getTasks();
+    expect(tasks.length, 1);
+
+    // Hapus tugas
+    await dbHelper.deleteTask(taskId);
+
+    // Periksa apakah tugas sudah dihapus
+    tasks = await dbHelper.getTasks();
+    expect(tasks.isEmpty, true);
   });
 
   test('Check deadline', () async {
-    // kerjakan
+    // Tambahkan tugas dengan deadline kemarin
+    final pastDeadline = DateTime.now().subtract(const Duration(days: 1));
+    final task = Task(title: 'Expired Task', deadline: pastDeadline);
+    await dbHelper.insertTask(task);
+
+    // Ambil semua tugas
+    final tasks = await dbHelper.getTasks();
+
+    // Pastikan tugas ada dan expired
+    expect(tasks.isNotEmpty, true);
+    expect(tasks.first.deadline!.isBefore(DateTime.now()), true);
   });
 }

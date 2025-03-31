@@ -18,8 +18,8 @@ class TaskService {
     final now = DateTime.now();
 
     for (final task in tasks) {
-      if (task.deadline != null && 
-          task.deadline!.isBefore(now) && 
+      if (task.deadline != null &&
+          task.deadline!.isBefore(now) &&
           !task.isCompleted) {
         await _notificationService.showNotification(
           title: 'Task Expired',
@@ -28,7 +28,7 @@ class TaskService {
       }
     }
   }
-  
+
   // Fungsi untuk mendapatkan semua task
   Future<List<Task>> getTask() async {
     return await _dbHelper.getTasks();
@@ -42,5 +42,21 @@ class TaskService {
       body: 'Task "${task.title}" telah ditambahkan!',
     );
     return id;
+  }
+
+  Future<void> deleteTask(int id) async {
+    await _dbHelper.deleteTask(id);
+    await _notificationService.showNotification(
+      title: 'Task Dihapus',
+      body: 'Sebuah task telah dihapus!',
+    );
+  }
+
+  Future<void> updateTask(Task task) async {
+    await _dbHelper.updateTask(task);
+    await _notificationService.showNotification(
+      title: 'Task Diperbarui',
+      body: 'Task "${task.title}" telah diperbarui!',
+    );
   }
 }

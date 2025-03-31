@@ -16,7 +16,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'tasks.db');
-    
+
     return await openDatabase(
       path,
       version: 1,
@@ -47,10 +47,25 @@ class DatabaseHelper {
         id: maps[i]['id'],
         title: maps[i]['title'],
         isCompleted: maps[i]['isCompleted'] == 1,
-        deadline: maps[i]['deadline'] != null 
-          ? DateTime.parse(maps[i]['deadline']) 
-          : null,
+        deadline: maps[i]['deadline'] != null
+            ? DateTime.parse(maps[i]['deadline'])
+            : null,
       );
     });
+  }
+
+  Future<int> deleteTask(int id) async {
+    final db = await database;
+    return await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> updateTask(Task task) async {
+    final db = await database;
+    return await db.update(
+      _tableName,
+      task.toMap(),
+      where: 'id = ?',
+      whereArgs: [task.id],
+    );
   }
 }

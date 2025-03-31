@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notifikasi_sql_lite/components/add_task_dialog.dart';
+import 'package:notifikasi_sql_lite/components/edit_task_dialog.dart';
 import 'package:notifikasi_sql_lite/components/task_item.dart';
 import '../models/task.dart';
 import '../services/task_service.dart';
@@ -40,6 +41,23 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _deleteTask(int id) async {
+    await widget.taskService.deleteTask(id);
+    _loadTasks(); // Refresh list setelah hapus
+  }
+
+  Future<void> _updateTask(Task task) async {
+    final updatedTask = await showDialog<Task>(
+      context: context,
+      builder: (context) => EditTaskDialog(task: task),
+    );
+
+    if (updatedTask != null) {
+      await widget.taskService.updateTask(updatedTask);
+      _loadTasks(); // Refresh daftar setelah update
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,9 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 final task = _tasks[index];
                 return TaskItem(
                   task: task,
-                  onDelete: () async {
-                    // tambahkan fungsi untuk delete task
-                  },
+                  onDelete: () => _deleteTask(task.id!),
+                  onUpdate: () => _updateTask(task),
                 );
               },
             ),
